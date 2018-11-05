@@ -4,7 +4,7 @@ import { services, IntentRequest } from "ask-sdk-model";
 
 // Helper
 import { Handler, NumberSlot, TestStateEnum } from "./Constant";
-import { AddBreak, AddCount } from './SpeechHelper';
+import { AddBreak, AddCount, ModifyProsody } from './SpeechHelper';
 import { ConfigBase } from 'aws-sdk/lib/config';
 import { addListener } from 'cluster';
 
@@ -48,17 +48,37 @@ const StartDrunkTestIntentHandler = {
 		{
 			case TestStateEnum.Starting:
 				speechText += "Are you ready for the drunk test";
-				testState = TestStateEnum.One;
+				testState = TestStateEnum.First;
 				break;
 				
-			case TestStateEnum.One:
+			case TestStateEnum.First:
 				speechText += "Alright, first test, go a head and find an open space. ";
 				speechText += AddBreak(4);
 				speechText += "Now that you are at the open space, start steping 10 steps forward on a single line following my count. ";
 				speechText += AddCount(10);
 				speechText += "How are you now? Are you ready for the second test? ";
 
-				testState = TestStateEnum.Two;
+				testState = TestStateEnum.Second;
+				break;
+
+			case TestStateEnum.Second:
+				speechText += "For second test, stand up straight raise your hand horizontally. ";
+				speechText += AddBreak(2);
+				speechText += "I will say left or right, and you will bring your corresponded hand and touch your nose. ";
+				speechText += ModifyProsody("Ready?", "high", "loud");
+				speechText += "How are you now? Are you ready for the second test? ";
+
+				testState = TestStateEnum.Third;
+				break;
+			
+			case TestStateEnum.Third:
+				speechText += "For second test, stand up straight raise your hand horizontally. ";
+				speechText += AddBreak(2);
+				speechText += "I will say left or right, and you will bring your corresponded hand and touch your nose. ";
+				speechText += ModifyProsody("Ready?", "high", "loud");
+				speechText += "How are you now? Are you ready for the second test? ";
+
+				testState = TestStateEnum.End;
 				break;
 		}
 
@@ -109,7 +129,7 @@ const CancelAndStopIntentHandler = {
 				|| handlerInput.requestEnvelope.request.intent.name === 'AMAZON.StopIntent');
 	},
 	handle(handlerInput: Alexa.HandlerInput) {
-		const speechText = 'Goodbye and be yourself today!';
+		const speechText = 'Be safe, do not drink and drive!';
 
 		return handlerInput.responseBuilder
 			.speak(speechText)
@@ -187,6 +207,7 @@ const GoodByeIntentHandler = {
 	}
 };
 
+// -------------------------------- Helper -------------------------------- //
 
 // Lambda init
 //var persistenceAdapterConfig = {

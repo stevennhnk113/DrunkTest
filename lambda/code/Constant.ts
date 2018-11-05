@@ -11,9 +11,10 @@ export enum CRUDResult
 export enum TestStateEnum
 {
 	Starting = "Starting",
-	One = "One",
-	Two = "Two",
-	Three = "Three"
+	First = "First",
+	Second = "Second",
+	Third = "Third",
+	End = "End"
 }
 
 export enum Handler

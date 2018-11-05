@@ -1,3 +1,5 @@
+//https://developer.amazon.com/docs/custom-skills/speech-synthesis-markup-language-ssml-reference.html#phoneme
+
 import { FileSystemCredentials } from "aws-sdk";
 
 export function AddSentence(speech: string)
@@ -22,7 +24,7 @@ export function AddCount(max: number, rate: string = "slow", pitch: string = "",
 	return countSpeech;
 }
 
-export function ModifyProsody(speech: string, rate: string = "slow", pitch: string = "", volumn: string = "")
+export function ModifyProsody(speech: string, rate: string = "medium", pitch: string = "medium", volumn: string = "medium")
 {
-	return "<prosody pitch=";
+	return "<prosody rate='" + rate + "', pitch='" + pitch + "', voulumn='" + volumn + "'";
 }
